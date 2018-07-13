@@ -1,23 +1,26 @@
 package chapter4.review;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.OptionalLong;
+import java.util.function.BiConsumer;
 import java.util.function.Predicate;
-import java.util.stream.LongStream;
-import java.util.stream.Stream;
+import java.util.function.Supplier;
+import java.util.function.UnaryOperator;
+import java.util.stream.*;
 
 public class Streams {
 
     public static void main(String[] args) {
-        // 1
         question1(false);
-
-        // 2
         question2(false);
-
-        // 3
         question3(false);
         question6(false);
-        question9(true);
+        question9(false);
+        question10(false);
+        question11(false);
+        question16(true);
     }
 
     private static void question1(boolean enable) {
@@ -70,9 +73,57 @@ public class Streams {
         }
     }
 
-    private static void question91(boolean enable) {
+    private static void question10(boolean enable) {
         if (enable) {
+            Stream.generate(() -> "1")
+                    .filter(x -> x.length() > 1)
+                    .forEach(System.out::println); // terminal operator -> void
+        }
+    }
 
+    private static void question11(boolean enable) {
+        if (enable) {
+            // B,C,E. would be correct but
+            System.out.println(Stream.iterate(1, x -> ++x)
+                    .limit(5)
+                    .map(x -> "" + x)
+                    .collect(Collectors.joining()));
+        }
+    }
+
+    private static void question12(boolean enable) {
+        if (enable) {
+            Supplier<String> x = String::new;
+            BiConsumer<String, String> y = (a, b) -> System.out.println();
+            UnaryOperator<String> z = a -> a+a;
+        }
+    }
+
+    private static void question13(boolean enable) {
+        if (enable) {
+            final List<Integer> l1 = Arrays.asList(1, 2, 3);
+//            Stream.of(l1)
+//                    .map(x -> x+1)
+        }
+    }
+
+    private static void question14(boolean enable) {
+        if (enable) {
+            final Stream<Integer> s = Stream.of(1);
+            final IntStream is = s.mapToInt(x -> x);
+            final DoubleStream ds = s.mapToDouble(x -> x);
+//            final Stream<Integer> s2 = ds.mapToInt(x -> x);
+        }
+    }
+
+    private static void question16(boolean enable) {
+        if (enable) {
+            final Stream<String> s = Stream.empty();
+            final Stream<String> s2 = Stream.empty();
+
+            final Map<Boolean, List<String>> p = s.collect(Collectors.partitioningBy(b -> b.startsWith("c")));
+            final Map<Boolean, List<String>> g = s.collect(Collectors.groupingBy(b -> b.startsWith("c")));
+            System.out.println(p + " " + g);
         }
     }
 
